@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>S3Play</title>
+    <meta charset='utf-8'>
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <script src="all.js" type="text/javascript"></script>
+
+    <script type="text/x-handlebars" data-template-name="application">
+      <div class="content">
+        <header>
+          <h1>S3Play</h1>
+        </header>
+        <section class="player" id="s3play">
+          {{ render "player" }}
+        </section>
+        <section class="s3play_songs playlist songs">
+          {{ outlet }}
+        </section>
+        <section class="tracks">
+          {{ render "songs" }}
+        </section>
+
+        <footer>
+          source: <a href='https://github.com/makevoid/s3play'>github/makevoid/s3play</a>
+        </footer>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="artists">
+      <h1>Artists</h1>
+
+      {{#unless dirs}}
+        loading songs...
+      {{/unless}}
+
+      {{#each dirs}}
+        <a href="javascript:void(0)" class="dir" {{bindAttr data-name="this"}} {{action "change_artist" this}}>{{this}}</a>
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="songs">
+      {{#each songs}}
+        <a href="javascript:void(0)" class="song" {{action "change" this}} {{bindAttr data-artist="dir"}}>{{name_short}}</a>
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="player">
+      <a class="prev" {{action "prev"}} href="javascript:void(0)"> ≪ </a>
+      <a class="play_pause" {{bindAttr class="playing"}}  {{action "play_pause"}} href="javascript:void(0)">
+        {{#if playing}} ▍▍ {{else}} ▶ {{/if}}
+      </a>
+      <a class="next" {{action "next"}} href="javascript:void(0)"> ≫ </a>
+      <audio  class='s3play_audio' mozaudiochannel="content" {{bindAttr src="file"}}></audio>
+      <div class="song_name">{{song_name}}</div>
+
+      <div class="inputs">
+        <span>seek:</span>
+        <input class="current_time" type="range" {{action "set_current_time" on="change"}} value=0></type>
+
+        <span>vol:</span>
+        <input class="volume" type="range" {{action "set_volume" on="change"}} value=0.8 max=1 step=0.02></type>
+        <a class="download btn" {{bindAttr href="download"}}> ⇓ </a>
+      </div>
+    </script>
+  </head>
+  <body>
+    <div class="loading_msg">
+      loading...
+    </div>
+  </body>
+</html>
