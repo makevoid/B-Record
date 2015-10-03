@@ -1,4 +1,4 @@
-# Imogelius
+# Imogelius - Blockchain Music Authoring Tool
 #### ( temporary name, subject to change :D )
 
 
@@ -30,6 +30,54 @@ BlockchainPen + S3Play for the music artists!!
 ---
 
 ---
+
+#### presentation:
+
+This is a music authoring Tool
+
+if you want to do the same thing as Imogen is doing
+you can use this app to do so!
+
+you can publish your new release to the public
+
+via the blockchain
+via key signing
+
+this app generates you a key (right now is a bitcoin key, but it could be a private key)
+alongside this key you have the corresponding [ARTIST] address of this key
+it's like an email address, except people can send you money with that
+
+the key instead is used for the blockchain to recognize that YOU and only YOU are the author of the content (music track)
+
+enough for the talk
+i'm going to write this message
+
+this message contains also a magnet link so people can connect and share the song between themselves
+
+my artist address is saved into the transaction
+
+after downloading this track people can donate to the artist money
+
+
+
+DEMO
+
+show transmission, get the link
+
+LOCAL magnet link
+magnet:?xt=urn:btih:eb47bd8168182467b2294404e87ad8059bb0d2ba&dn=03%20Blossoms.mp3
+
+S3 magnet link
+magnet:?xt=urn:btih:4c5caae61a713ca4ae9c751f4ee0cb978a98de12&dn=Aritmia%5F03%20Blossoms.mp3&tr=http%3A%2F%2Fs3-tracker.eu-west-1.amazonaws.com%3A6969%2Fannounce
+
+
+
+
+
+
+---
+
+there are other ways to donate directly to the artist like via the ProTip extension
 
 
 #### notes:

@@ -21,11 +21,11 @@
 
 @media (min-width: 400px) {
   .container {
-    width: 90%;
+    width: 85%;
     padding: 0; } }
 @media (min-width: 550px) {
   .container {
-    width: 85%; }
+    width: 80%; }
 
   .column,
   .columns {
@@ -500,3 +500,6 @@ input[type=submit], button {
 
 .align-right {
   text-align: right; }
+
+.hidden {
+  display: none; }

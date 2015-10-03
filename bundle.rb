@@ -294,17 +294,34 @@ class Pen
 
 end
 
+# class Wallet
+#   include RModel
+#
+#   attr_accessor :address, :balance
+#
+#   def initialize(address:, balance:)
+#     @address = address
+#     @balance = balance
+#   end
+#
+#   TEST = ->{ Wallet.new address: "1asd", balance: 10_000 }
+# end
+
 class Wallet
-  include RModel
+  extend DebugHelpers
 
-  attr_accessor :address, :balance
-
-  def initialize(address:, balance:)
-    @address = address
-    @balance = balance
+  def initialize
+    @pvt_key = PrivateKey.new
+    @address = @pvt_key.address_str
   end
 
-  TEST = ->{ Wallet.new address: "1asd", balance: 10_000 }
+  def method_name
+    store.pvt_key
+  end
+
+  def store
+    Native(`localStorage`)
+  end
 end
 
 
@@ -374,26 +391,74 @@ class MessageForm
 
   def render
     div className: "message_input" do
-      div className: "row align-right" do
-        span do
-          self.chars
+
+      # INPUT
+      # div className: "row align-right" do
+      #   span do
+      #     self.chars
+      #   end
+      #   span do
+      #     " / #{MAX_CHARS} chars"
+      #   end
+      # end
+      # spacer
+      div className: "row" do
+        div className: "four columns" do
+          input(name: "message", placeholder: "Artist name", type: "text")
         end
-        span do
-          " / #{MAX_CHARS} chars"
+      end
+      div className: "row" do
+        div className: "four columns" do
+          input(name: "message", placeholder: "Song name", type: "text")
+        end
+      end
+      div className: "row" do
+        div className: "four columns" do
+          input(name: "message", placeholder: "place the magnet link here...", type: "text")
+            .on(:change){ update_counter }
+        end
+        div className: "two columns" do
+          # button(disabled: self.submit_disabled) do
+          #   "Write"
+          # end.on(:click){ write }
+        end
+      end
+      div className: "row" do
+        div className: "two columns" do
+          "- or -"
         end
       end
       spacer
-      div className: "row" do
-        div className: "five columns" do
-          input(name: "message", placeholder: "your important message...", type: "text")
-            .on(:change){ update_counter }
+
+      # FILE + BUTTON
+      div className: "message_input" do
+        div className: "row" do
+          div className: "four columns" do
+            label do
+              div{ "MP3 file" }
+              input name: "file", type: "file"
+            end
+          end
         end
-        div className: "one columns" do
-          button(disabled: self.submit_disabled) do
-            "Write"
-          end.on(:click){ write }
+        div className: "row" do
+          div className: "four columns" do
+            label do
+              div{ "FLAC file (optional)" }
+              input name: "file_flac", type: "file"
+            end
+          end
+          div className: "two columns" do
+            label do
+              div{ "\u00a0" }
+              button(disabled: self.submit_disabled) do
+                "Register"
+              end.on(:click){ hash_file }
+            end
+          end
         end
       end
+
+      # MESSAGE
       div className: "spinner" do
         span { "loading..." }
       end if self.loading
@@ -453,10 +518,12 @@ class Address
   # 5KJJ774B9S1z72Q1THqccVQcjHzMNfU6heKwaLVJ1CtDVZJgrPr
   define_state(:address_asd)  { "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo" }
   define_state(:pvt_key)  { PrivateKey.new }
-  define_state(:pvt_key_string)  { pvt_key  }
+  # define_state(:pvt_key)  { PrivateKey.new }
+  # define_state(:pvt_key_string)  { self.pvt_key.to_wif  }
+  define_state(:pvt_key_string)  { ""  }
   define_state(:address)  { "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo" }
 
-  define_state(:pvt_key_show)  { "hidden" }
+  define_state(:pvt_key_show)  { false }
 
 
 
@@ -466,6 +533,10 @@ class Address
   # define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key_wif)  { self.pvt_key.to_wif }
 
+  def show_key
+    self.pvt_key_show = true
+  end
+
   def render
     div className: "row" do
       div className: "six columns" do
@@ -473,16 +544,19 @@ class Address
           "address: #{self.address}"
         end
         div do
-          div className: "row" do
-            div className: "five columns" do
-              "-"
-            end
-            div className: "one columns #{self.pvt_key_show}" do
-              button { "Show key" }
-            end.on(:click){ show_key }
-          end
+          "#{PrivateKey.new.to_wif}"
         end
         div do
+          div className: "row" do
+            div className: "four columns" do
+              "\u00a0"
+            end
+            div className: "two columns #{"hidden" if self.pvt_key_show}" do
+              button { "Show key" }.on(:click){ show_key }
+            end
+          end
+        end
+        div className: "#{"hidden" unless self.pvt_key_show}" do
           "private key: #{self.address}"
         end
       end
@@ -497,20 +571,34 @@ class FileForm
   define_state(:submit_disabled)  { false }
 
   def hash_file
-   Hasher.hash `document.querySelector("input[name=file]").files[0]`
-   `console.log("hash file called!!!")`
+  #  Hasher.hash `document.querySelector("input[name=file]").files[0]`
+  #  `console.log("hash file called!!!")`
   end
 
   def render
     div className: "message_input" do
       div className: "row" do
-        div className: "five columns" do
-          input name: "file", type: "file"
+        div className: "four columns" do
+          label do
+            div{ "Your MP3 file" }
+            input name: "file", type: "file"
+          end
         end
-        div className: "one columns" do
-          button(disabled: self.submit_disabled) do
-            "Write hash"
-          end.on(:click){ hash_file }
+      end
+      div className: "row" do
+        div className: "four columns" do
+          label do
+            div{ "Your FLAC file (optional)" }
+            input name: "file_flac", type: "file"
+          end
+        end
+        div className: "two columns" do
+          label do
+            div{ "\u00a0" }
+            button(disabled: self.submit_disabled) do
+              "Register"
+            end.on(:click){ hash_file }
+          end
         end
       end
     end
@@ -536,9 +624,9 @@ class BCPen
   def render
     div className: "bc_stylus" do
       present MessageForm
-      div className: "spacer30"
-      present FileForm # alpha
-      div className: "spacer50"
+      # div className: "spacer30"
+      # present FileForm # alpha
+      div className: "spacer300"
       div className: "address" do
         present Address
       end
