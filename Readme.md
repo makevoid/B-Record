@@ -49,7 +49,8 @@ you can publish your new release to the public
 via the blockchain
 via key signing
 
-this app generates you a key
+this app generates you a key (a private key) that you can use to author content
+the network of computers will recognize you as the oauthor of the 
 
 alongside this key you have the corresponding Artist address of this key
 it's like an email address, except people can send you money with that
