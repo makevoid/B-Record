@@ -38,6 +38,9 @@ imogen heap's keybase: https://keybase.io/_/api/1.0/user/lookup.json?usernames=i
 
 This is a music authoring Tool
 
+made for small artists that want promote their work and accept donations
+
+
 if you want to do the same thing as Imogen is doing
 you can use this app to do so!
 
@@ -46,8 +49,9 @@ you can publish your new release to the public
 via the blockchain
 via key signing
 
-this app generates you a key (right now is a bitcoin key, but it could be a private key)
-alongside this key you have the corresponding [ARTIST] address of this key
+this app generates you a key
+
+alongside this key you have the corresponding Artist address of this key
 it's like an email address, except people can send you money with that
 
 the key instead is used for the blockchain to recognize that YOU and only YOU are the author of the content (music track)
@@ -60,6 +64,10 @@ this message contains also a magnet link so people can connect and share the son
 my artist address is saved into the transaction
 
 after downloading this track people can donate to the artist money
+
+
+
+
 
 
 
