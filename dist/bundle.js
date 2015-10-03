@@ -1079,7 +1079,7 @@ Opal.modules["json"] = function(Opal) {
   Opal.dynamic_require_severity = "error";
   var self = Opal.top, $scope = Opal, nil = Opal.nil, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $module = Opal.module, $range = Opal.range, $hash2 = Opal.hash2, content = nil;
 
-  Opal.add_stubs(['$map', '$[]', '$to_s', '$instance_variables', '$to_proc', '$-', '$==', '$size', '$extend', '$include', '$get', '$utxo_callback', '$lambda', '$to_n', '$post', '$pushtx_callback', '$address', '$require', '$new', '$log', '$address_str', '$hashes_convert', '$each', '$+', '$utxos', '$store', '$include?', '$parse', '$push', '$>', '$empty?', '$pushtx', '$utxos=', '$to_json', '$call', '$sign_and_broadcast', '$utxo', '$received_utxo', '$Native', '$pvt_key', '$op_return', '$callback_write', '$define_state', '$message', '$loading=', '$write', '$chars=', '$chars', '$submit_disabled=', '$div', '$input', '$on', '$update_counter', '$spacer', '$label', '$hash_file', '$button', '$submit_disabled', '$loading', '$span', '$tx_id', '$a', '$tx_id=', '$pvt_key_show=', '$to_wif', '$show_key', '$pvt_key_show', '$p', '$present', '$q', '$render', '$create_element']);
+  Opal.add_stubs(['$map', '$[]', '$to_s', '$instance_variables', '$to_proc', '$-', '$==', '$size', '$extend', '$include', '$get', '$utxo_callback', '$lambda', '$to_n', '$post', '$pushtx_callback', '$address', '$require', '$new', '$log', '$address_str', '$hashes_convert', '$each', '$+', '$utxos', '$store', '$include?', '$parse', '$push', '$>', '$empty?', '$pushtx', '$utxos=', '$to_json', '$call', '$sign_and_broadcast', '$utxo', '$received_utxo', '$Native', '$pvt_key', '$op_return', '$callback_write', '$define_state', '$message', '$loading=', '$write', '$chars=', '$chars', '$submit_disabled=', '$stringify', '$join', '$split', '$preview=', '$div', '$on', '$input_change', '$form', '$input', '$spacer', '$label', '$pre', '$preview', '$hash_file', '$button', '$submit_disabled', '$loading', '$span', '$tx_id', '$a', '$tx_id=', '$pvt_key_show=', '$to_address', '$show_key', '$pvt_key_show', '$to_wif', '$p', '$present', '$q', '$render', '$create_element']);
   console.log("loading app environment");
   self.$require("browser");
   self.$require("browser/http");
@@ -1235,6 +1235,8 @@ if (tx_info == null) tx_info = nil;
       return key.toAddress();
     };
 
+    Opal.defn(self, '$to_address', def.$address);
+
     def.$address_str = function() {
       var self = this, address = nil;
 
@@ -1280,7 +1282,7 @@ if (tx_info == null) tx_info = nil;
         if (self.pvt_key_string == null) self.pvt_key_string = nil;
 if (message == null) message = nil;if (utxos == null) utxos = nil;if (callback == null) callback = nil;
       self.$log("sign and broadcast");
-        tx_amount = 1000;
+        tx_amount = 2000;
         utxos = self.$hashes_convert(utxos);
         self.$log("utxo_size", utxos.$size());
         utxos_out = [];
@@ -1478,7 +1480,7 @@ if (tx_id == null) tx_id = nil;
     function $MessageForm(){};
     var self = $MessageForm = $klass($base, $super, 'MessageForm', $MessageForm);
 
-    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_11, $c, TMP_12, $d, TMP_13, $e, TMP_14;
+    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_11, $c, TMP_12, $d, TMP_13, $e, TMP_14, $f, TMP_15;
 
     self.$include((($scope.get('React')).$$scope.get('Component')));
 
@@ -1503,6 +1505,10 @@ if (tx_id == null) tx_id = nil;
     ($a = ($e = self).$define_state, $a.$$p = (TMP_14 = function(){var self = TMP_14.$$s || this;
 
     return false}, TMP_14.$$s = self, TMP_14), $a).call($e, "loading");
+
+    ($a = ($f = self).$define_state, $a.$$p = (TMP_15 = function(){var self = TMP_15.$$s || this;
+
+    return "{}"}, TMP_15.$$s = self, TMP_15), $a).call($f, "preview");
 
     Opal.cdecl($scope, 'MAX_CHARS', 75);
 
@@ -1531,127 +1537,168 @@ if (tx_id == null) tx_id = nil;
       };
     };
 
+    def.$input_change = function() {
+      var $a, $b, self = this, key = nil, artist = nil, song = nil, url = nil, magnet = nil, btc = nil, extra = nil, prev = nil;
+
+      key = $('form').serializeArray();
+      artist = key[0].value;
+      song = key[1].value;
+      url = key[2].value;
+      magnet = key[3].value;
+      btc = $('.bitcoin_address').text();
+      extra = key[4].value;
+      self.$log(artist);
+      key = $hash2(["artist", "song", "url", "magnet", "btc", "extra"], {"artist": artist, "song": song, "url": url, "magnet": magnet, "btc": btc, "extra": extra});
+      prev = $scope.get('JSON').$stringify($scope.get('JSON').$parse(key));
+      prev = prev.$split(",").$join(",\n");
+      return (($a = [prev]), $b = self, $b['$preview='].apply($b, $a), $a[$a.length-1]);
+    };
+
     def.$render = function() {
-      var $a, $b, TMP_15, self = this;
+      var $a, $b, TMP_16, self = this;
 
-      return ($a = ($b = self).$div, $a.$$p = (TMP_15 = function(){var self = TMP_15.$$s || this, $a, $b, TMP_16, $c, TMP_18, $d, TMP_20, $e, TMP_24, $f, TMP_26, $g, TMP_40, $h, TMP_42;
+      return ($a = ($b = self).$div, $a.$$p = (TMP_16 = function(){var self = TMP_16.$$s || this, $a, $b, TMP_17, $c, $d, TMP_18;
 
-      ($a = ($b = self).$div, $a.$$p = (TMP_16 = function(){var self = TMP_16.$$s || this, $a, $b, TMP_17;
+      return ($a = ($b = ($c = ($d = self).$form, $c.$$p = (TMP_18 = function(){var self = TMP_18.$$s || this, $a, $b, TMP_19, $c, TMP_21, $d, TMP_23, $e, TMP_25, $f, TMP_28, $g, TMP_30, $h, TMP_32, $i, TMP_51, $j, TMP_53;
 
-        return ($a = ($b = self).$div, $a.$$p = (TMP_17 = function(){var self = TMP_17.$$s || this;
+        ($a = ($b = self).$div, $a.$$p = (TMP_19 = function(){var self = TMP_19.$$s || this, $a, $b, TMP_20;
 
-          return self.$input($hash2(["name", "placeholder", "type"], {"name": "message", "placeholder": "Artist name", "type": "text"}))}, TMP_17.$$s = self, TMP_17), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_16.$$s = self, TMP_16), $a).call($b, $hash2(["className"], {"className": "row"}));
-        ($a = ($c = self).$div, $a.$$p = (TMP_18 = function(){var self = TMP_18.$$s || this, $a, $b, TMP_19;
+          return ($a = ($b = self).$div, $a.$$p = (TMP_20 = function(){var self = TMP_20.$$s || this;
 
-        return ($a = ($b = self).$div, $a.$$p = (TMP_19 = function(){var self = TMP_19.$$s || this;
+            return self.$input($hash2(["name", "placeholder", "type"], {"name": "artist", "placeholder": "Artist name", "type": "text"}))}, TMP_20.$$s = self, TMP_20), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_19.$$s = self, TMP_19), $a).call($b, $hash2(["className"], {"className": "row"}));
+          ($a = ($c = self).$div, $a.$$p = (TMP_21 = function(){var self = TMP_21.$$s || this, $a, $b, TMP_22;
 
-          return self.$input($hash2(["name", "placeholder", "type"], {"name": "message", "placeholder": "Song name", "type": "text"}))}, TMP_19.$$s = self, TMP_19), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_18.$$s = self, TMP_18), $a).call($c, $hash2(["className"], {"className": "row"}));
-        ($a = ($d = self).$div, $a.$$p = (TMP_20 = function(){var self = TMP_20.$$s || this, $a, $b, TMP_21, $c, TMP_23;
+          return ($a = ($b = self).$div, $a.$$p = (TMP_22 = function(){var self = TMP_22.$$s || this;
 
-        ($a = ($b = self).$div, $a.$$p = (TMP_21 = function(){var self = TMP_21.$$s || this, $a, $b, TMP_22;
+            return self.$input($hash2(["name", "placeholder", "type"], {"name": "song", "placeholder": "Song name", "type": "text"}))}, TMP_22.$$s = self, TMP_22), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_21.$$s = self, TMP_21), $a).call($c, $hash2(["className"], {"className": "row"}));
+          ($a = ($d = self).$div, $a.$$p = (TMP_23 = function(){var self = TMP_23.$$s || this, $a, $b, TMP_24;
 
-          return ($a = ($b = self.$input($hash2(["name", "placeholder", "type"], {"name": "message", "placeholder": "place the magnet link here...", "type": "text"}))).$on, $a.$$p = (TMP_22 = function(){var self = TMP_22.$$s || this;
+          return ($a = ($b = self).$div, $a.$$p = (TMP_24 = function(){var self = TMP_24.$$s || this;
 
-            return self.$update_counter()}, TMP_22.$$s = self, TMP_22), $a).call($b, "change")}, TMP_21.$$s = self, TMP_21), $a).call($b, $hash2(["className"], {"className": "four columns"}));
-          return ($a = ($c = self).$div, $a.$$p = (TMP_23 = function(){var self = TMP_23.$$s || this;
+            return self.$input($hash2(["name", "placeholder", "type"], {"name": "url", "placeholder": "URL", "type": "text"}))}, TMP_24.$$s = self, TMP_24), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_23.$$s = self, TMP_23), $a).call($d, $hash2(["className"], {"className": "row"}));
+          ($a = ($e = self).$div, $a.$$p = (TMP_25 = function(){var self = TMP_25.$$s || this, $a, $b, TMP_26, $c, TMP_27;
 
-          return nil}, TMP_23.$$s = self, TMP_23), $a).call($c, $hash2(["className"], {"className": "two columns"}));}, TMP_20.$$s = self, TMP_20), $a).call($d, $hash2(["className"], {"className": "row"}));
-        ($a = ($e = self).$div, $a.$$p = (TMP_24 = function(){var self = TMP_24.$$s || this, $a, $b, TMP_25;
+          ($a = ($b = self).$div, $a.$$p = (TMP_26 = function(){var self = TMP_26.$$s || this;
 
-        return ($a = ($b = self).$div, $a.$$p = (TMP_25 = function(){var self = TMP_25.$$s || this;
+            return self.$input($hash2(["name", "placeholder", "type"], {"name": "magnet", "placeholder": "Place the magnet link here...", "type": "text"}))}, TMP_26.$$s = self, TMP_26), $a).call($b, $hash2(["className"], {"className": "four columns"}));
+            return ($a = ($c = self).$div, $a.$$p = (TMP_27 = function(){var self = TMP_27.$$s || this;
 
-          return "- or -"}, TMP_25.$$s = self, TMP_25), $a).call($b, $hash2(["className"], {"className": "two columns"}))}, TMP_24.$$s = self, TMP_24), $a).call($e, $hash2(["className"], {"className": "row"}));
-        self.$spacer();
-        ($a = ($f = self).$div, $a.$$p = (TMP_26 = function(){var self = TMP_26.$$s || this, $a, $b, TMP_27, $c, TMP_31;
+            return nil}, TMP_27.$$s = self, TMP_27), $a).call($c, $hash2(["className"], {"className": "two columns"}));}, TMP_25.$$s = self, TMP_25), $a).call($e, $hash2(["className"], {"className": "row"}));
+          ($a = ($f = self).$div, $a.$$p = (TMP_28 = function(){var self = TMP_28.$$s || this, $a, $b, TMP_29;
 
-        ($a = ($b = self).$div, $a.$$p = (TMP_27 = function(){var self = TMP_27.$$s || this, $a, $b, TMP_28;
+          return ($a = ($b = self).$div, $a.$$p = (TMP_29 = function(){var self = TMP_29.$$s || this;
 
-          return ($a = ($b = self).$div, $a.$$p = (TMP_28 = function(){var self = TMP_28.$$s || this, $a, $b, TMP_29;
+            return self.$input($hash2(["name", "placeholder", "type"], {"name": "extra", "placeholder": "Extra data: label, etc", "type": "text"}))}, TMP_29.$$s = self, TMP_29), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_28.$$s = self, TMP_28), $a).call($f, $hash2(["className"], {"className": "row"}));
+          ($a = ($g = self).$div, $a.$$p = (TMP_30 = function(){var self = TMP_30.$$s || this, $a, $b, TMP_31;
 
-            return ($a = ($b = self).$label, $a.$$p = (TMP_29 = function(){var self = TMP_29.$$s || this, $a, $b, TMP_30;
+          return ($a = ($b = self).$div, $a.$$p = (TMP_31 = function(){var self = TMP_31.$$s || this;
 
-              ($a = ($b = self).$div, $a.$$p = (TMP_30 = function(){var self = TMP_30.$$s || this;
+            return "- or -"}, TMP_31.$$s = self, TMP_31), $a).call($b, $hash2(["className"], {"className": "two columns"}))}, TMP_30.$$s = self, TMP_30), $a).call($g, $hash2(["className"], {"className": "row"}));
+          self.$spacer();
+          ($a = ($h = self).$div, $a.$$p = (TMP_32 = function(){var self = TMP_32.$$s || this, $a, $b, TMP_33, $c, TMP_37, $d, TMP_41;
 
-                return "MP3 file"}, TMP_30.$$s = self, TMP_30), $a).call($b);
-                return self.$input($hash2(["name", "type"], {"name": "file", "type": "file"}));}, TMP_29.$$s = self, TMP_29), $a).call($b)}, TMP_28.$$s = self, TMP_28), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_27.$$s = self, TMP_27), $a).call($b, $hash2(["className"], {"className": "row"}));
-          return ($a = ($c = self).$div, $a.$$p = (TMP_31 = function(){var self = TMP_31.$$s || this, $a, $b, TMP_32, $c, TMP_35;
+          ($a = ($b = self).$div, $a.$$p = (TMP_33 = function(){var self = TMP_33.$$s || this, $a, $b, TMP_34;
 
-          ($a = ($b = self).$div, $a.$$p = (TMP_32 = function(){var self = TMP_32.$$s || this, $a, $b, TMP_33;
+            return ($a = ($b = self).$div, $a.$$p = (TMP_34 = function(){var self = TMP_34.$$s || this, $a, $b, TMP_35;
 
-            return ($a = ($b = self).$label, $a.$$p = (TMP_33 = function(){var self = TMP_33.$$s || this, $a, $b, TMP_34;
+              return ($a = ($b = self).$label, $a.$$p = (TMP_35 = function(){var self = TMP_35.$$s || this, $a, $b, TMP_36;
 
-              ($a = ($b = self).$div, $a.$$p = (TMP_34 = function(){var self = TMP_34.$$s || this;
+                ($a = ($b = self).$div, $a.$$p = (TMP_36 = function(){var self = TMP_36.$$s || this;
 
-                return "FLAC file (optional)"}, TMP_34.$$s = self, TMP_34), $a).call($b);
-                return self.$input($hash2(["name", "type"], {"name": "file_flac", "type": "file"}));}, TMP_33.$$s = self, TMP_33), $a).call($b)}, TMP_32.$$s = self, TMP_32), $a).call($b, $hash2(["className"], {"className": "four columns"}));
-            return ($a = ($c = self).$div, $a.$$p = (TMP_35 = function(){var self = TMP_35.$$s || this, $a, $b, TMP_36;
+                  return "MP3 file"}, TMP_36.$$s = self, TMP_36), $a).call($b);
+                  return self.$input($hash2(["name", "type"], {"name": "file", "type": "file"}));}, TMP_35.$$s = self, TMP_35), $a).call($b)}, TMP_34.$$s = self, TMP_34), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_33.$$s = self, TMP_33), $a).call($b, $hash2(["className"], {"className": "row"}));
+            ($a = ($c = self).$div, $a.$$p = (TMP_37 = function(){var self = TMP_37.$$s || this, $a, $b, TMP_38;
 
-            return ($a = ($b = self).$label, $a.$$p = (TMP_36 = function(){var self = TMP_36.$$s || this, $a, $b, TMP_37, $c, TMP_38, $d, $e, TMP_39;
+            return ($a = ($b = self).$div, $a.$$p = (TMP_38 = function(){var self = TMP_38.$$s || this, $a, $b, TMP_39;
 
-              ($a = ($b = self).$div, $a.$$p = (TMP_37 = function(){var self = TMP_37.$$s || this;
+              return ($a = ($b = self).$label, $a.$$p = (TMP_39 = function(){var self = TMP_39.$$s || this, $a, $b, TMP_40;
 
-                return " "}, TMP_37.$$s = self, TMP_37), $a).call($b);
-                return ($a = ($c = ($d = ($e = self).$button, $d.$$p = (TMP_39 = function(){var self = TMP_39.$$s || this;
+                ($a = ($b = self).$div, $a.$$p = (TMP_40 = function(){var self = TMP_40.$$s || this;
 
-                return "Register"}, TMP_39.$$s = self, TMP_39), $d).call($e, $hash2(["disabled"], {"disabled": self.$submit_disabled()}))).$on, $a.$$p = (TMP_38 = function(){var self = TMP_38.$$s || this;
+                  return "FLAC file (optional)"}, TMP_40.$$s = self, TMP_40), $a).call($b);
+                  return self.$input($hash2(["name", "type"], {"name": "file_flac", "type": "file"}));}, TMP_39.$$s = self, TMP_39), $a).call($b)}, TMP_38.$$s = self, TMP_38), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_37.$$s = self, TMP_37), $a).call($c, $hash2(["className"], {"className": "row"}));
+            return ($a = ($d = self).$div, $a.$$p = (TMP_41 = function(){var self = TMP_41.$$s || this, $a, $b, TMP_42, $c, TMP_46;
 
-                return self.$hash_file()}, TMP_38.$$s = self, TMP_38), $a).call($c, "click");}, TMP_36.$$s = self, TMP_36), $a).call($b)}, TMP_35.$$s = self, TMP_35), $a).call($c, $hash2(["className"], {"className": "two columns"}));}, TMP_31.$$s = self, TMP_31), $a).call($c, $hash2(["className"], {"className": "row"}));}, TMP_26.$$s = self, TMP_26), $a).call($f, $hash2(["className"], {"className": "message_input"}));
-        if ((($a = self.$loading()) !== nil && (!$a.$$is_boolean || $a == true))) {
-          ($a = ($g = self).$div, $a.$$p = (TMP_40 = function(){var self = TMP_40.$$s || this, $a, $b, TMP_41;
+            ($a = ($b = self).$div, $a.$$p = (TMP_42 = function(){var self = TMP_42.$$s || this, $a, $b, TMP_43;
 
-          return ($a = ($b = self).$span, $a.$$p = (TMP_41 = function(){var self = TMP_41.$$s || this;
+              return ($a = ($b = self).$label, $a.$$p = (TMP_43 = function(){var self = TMP_43.$$s || this, $a, $b, TMP_44, $c, TMP_45;
 
-            return "loading..."}, TMP_41.$$s = self, TMP_41), $a).call($b)}, TMP_40.$$s = self, TMP_40), $a).call($g, $hash2(["className"], {"className": "spinner"}))};
-        if ((($a = self.$tx_id()) !== nil && (!$a.$$is_boolean || $a == true))) {
-          return ($a = ($h = self).$div, $a.$$p = (TMP_42 = function(){var self = TMP_42.$$s || this, $a, $b, TMP_43, $c, TMP_44;
+                ($a = ($b = self).$div, $a.$$p = (TMP_44 = function(){var self = TMP_44.$$s || this;
 
-          self.$div($hash2(["className"], {"className": "spacer30"}));
-            ($a = ($b = self).$div, $a.$$p = (TMP_43 = function(){var self = TMP_43.$$s || this;
+                  return "preview:"}, TMP_44.$$s = self, TMP_44), $a).call($b);
+                  return ($a = ($c = self).$pre, $a.$$p = (TMP_45 = function(){var self = TMP_45.$$s || this;
 
-            return "the message has been written: " + (self.$tx_id())}, TMP_43.$$s = self, TMP_43), $a).call($b);
-            return ($a = ($c = self).$div, $a.$$p = (TMP_44 = function(){var self = TMP_44.$$s || this, $a, $b, TMP_45, $c, TMP_47, $d, TMP_48, $e, TMP_50, $f, TMP_51, $g, TMP_53, $h, TMP_54;
+                  return self.$preview()}, TMP_45.$$s = self, TMP_45), $a).call($c, $hash2(["className", "type"], {"className": "preview", "type": "file"}));}, TMP_43.$$s = self, TMP_43), $a).call($b)}, TMP_42.$$s = self, TMP_42), $a).call($b, $hash2(["className"], {"className": "four columns"}));
+              return ($a = ($c = self).$div, $a.$$p = (TMP_46 = function(){var self = TMP_46.$$s || this, $a, $b, TMP_47;
 
-            ($a = ($b = self).$span, $a.$$p = (TMP_45 = function(){var self = TMP_45.$$s || this, $a, $b, TMP_46;
+              return ($a = ($b = self).$label, $a.$$p = (TMP_47 = function(){var self = TMP_47.$$s || this, $a, $b, TMP_48, $c, TMP_49, $d, $e, TMP_50;
 
-              return ($a = ($b = self).$a, $a.$$p = (TMP_46 = function(){var self = TMP_46.$$s || this;
+                ($a = ($b = self).$div, $a.$$p = (TMP_48 = function(){var self = TMP_48.$$s || this;
 
-                return "blockcypher.com"}, TMP_46.$$s = self, TMP_46), $a).call($b, $hash2(["href"], {"href": "https://live.blockcypher.com/btc/tx/" + (self.$tx_id())}))}, TMP_45.$$s = self, TMP_45), $a).call($b);
-              ($a = ($c = self).$span, $a.$$p = (TMP_47 = function(){var self = TMP_47.$$s || this;
+                  return " "}, TMP_48.$$s = self, TMP_48), $a).call($b);
+                  return ($a = ($c = ($d = ($e = self).$button, $d.$$p = (TMP_50 = function(){var self = TMP_50.$$s || this;
 
-              return " - "}, TMP_47.$$s = self, TMP_47), $a).call($c);
-              ($a = ($d = self).$span, $a.$$p = (TMP_48 = function(){var self = TMP_48.$$s || this, $a, $b, TMP_49;
+                  return "Register"}, TMP_50.$$s = self, TMP_50), $d).call($e, $hash2(["disabled"], {"disabled": self.$submit_disabled()}))).$on, $a.$$p = (TMP_49 = function(){var self = TMP_49.$$s || this;
 
-              return ($a = ($b = self).$a, $a.$$p = (TMP_49 = function(){var self = TMP_49.$$s || this;
+                  return self.$hash_file()}, TMP_49.$$s = self, TMP_49), $a).call($c, "click");}, TMP_47.$$s = self, TMP_47), $a).call($b)}, TMP_46.$$s = self, TMP_46), $a).call($c, $hash2(["className"], {"className": "two columns"}));}, TMP_41.$$s = self, TMP_41), $a).call($d, $hash2(["className"], {"className": "row"}));}, TMP_32.$$s = self, TMP_32), $a).call($h, $hash2(["className"], {"className": "message_input"}));
+          if ((($a = self.$loading()) !== nil && (!$a.$$is_boolean || $a == true))) {
+            ($a = ($i = self).$div, $a.$$p = (TMP_51 = function(){var self = TMP_51.$$s || this, $a, $b, TMP_52;
 
-                return "blockchain.info"}, TMP_49.$$s = self, TMP_49), $a).call($b, $hash2(["href"], {"href": "https://blockchain.info/tx/" + (self.$tx_id())}))}, TMP_48.$$s = self, TMP_48), $a).call($d);
-              ($a = ($e = self).$span, $a.$$p = (TMP_50 = function(){var self = TMP_50.$$s || this;
+            return ($a = ($b = self).$span, $a.$$p = (TMP_52 = function(){var self = TMP_52.$$s || this;
 
-              return " - "}, TMP_50.$$s = self, TMP_50), $a).call($e);
-              ($a = ($f = self).$span, $a.$$p = (TMP_51 = function(){var self = TMP_51.$$s || this, $a, $b, TMP_52;
+              return "loading..."}, TMP_52.$$s = self, TMP_52), $a).call($b)}, TMP_51.$$s = self, TMP_51), $a).call($i, $hash2(["className"], {"className": "spinner"}))};
+          if ((($a = self.$tx_id()) !== nil && (!$a.$$is_boolean || $a == true))) {
+            return ($a = ($j = self).$div, $a.$$p = (TMP_53 = function(){var self = TMP_53.$$s || this, $a, $b, TMP_54, $c, TMP_55;
 
-              return ($a = ($b = self).$a, $a.$$p = (TMP_52 = function(){var self = TMP_52.$$s || this;
+            self.$div($hash2(["className"], {"className": "spacer30"}));
+              ($a = ($b = self).$div, $a.$$p = (TMP_54 = function(){var self = TMP_54.$$s || this;
 
-                return "chain.so"}, TMP_52.$$s = self, TMP_52), $a).call($b, $hash2(["href"], {"href": "https://chain.so/tx/BTC/" + (self.$tx_id())}))}, TMP_51.$$s = self, TMP_51), $a).call($f);
-              ($a = ($g = self).$span, $a.$$p = (TMP_53 = function(){var self = TMP_53.$$s || this;
+              return "the message has been written: " + (self.$tx_id())}, TMP_54.$$s = self, TMP_54), $a).call($b);
+              return ($a = ($c = self).$div, $a.$$p = (TMP_55 = function(){var self = TMP_55.$$s || this, $a, $b, TMP_56, $c, TMP_58, $d, TMP_59, $e, TMP_61, $f, TMP_62, $g, TMP_64, $h, TMP_65;
 
-              return " - "}, TMP_53.$$s = self, TMP_53), $a).call($g);
-              return ($a = ($h = self).$span, $a.$$p = (TMP_54 = function(){var self = TMP_54.$$s || this, $a, $b, TMP_55;
+              ($a = ($b = self).$span, $a.$$p = (TMP_56 = function(){var self = TMP_56.$$s || this, $a, $b, TMP_57;
 
-              return ($a = ($b = self).$a, $a.$$p = (TMP_55 = function(){var self = TMP_55.$$s || this;
+                return ($a = ($b = self).$a, $a.$$p = (TMP_57 = function(){var self = TMP_57.$$s || this;
 
-                return "eternitywall.it"}, TMP_55.$$s = self, TMP_55), $a).call($b, $hash2(["href"], {"href": "http://eternitywall.it/m/" + (self.$tx_id())}))}, TMP_54.$$s = self, TMP_54), $a).call($h);}, TMP_44.$$s = self, TMP_44), $a).call($c);}, TMP_42.$$s = self, TMP_42), $a).call($h, $hash2(["className"], {"className": "row"}))
-          } else {
-          return nil
-        };}, TMP_15.$$s = self, TMP_15), $a).call($b, $hash2(["className"], {"className": "message_input"}));
+                  return "blockcypher.com"}, TMP_57.$$s = self, TMP_57), $a).call($b, $hash2(["href"], {"href": "https://live.blockcypher.com/btc/tx/" + (self.$tx_id())}))}, TMP_56.$$s = self, TMP_56), $a).call($b);
+                ($a = ($c = self).$span, $a.$$p = (TMP_58 = function(){var self = TMP_58.$$s || this;
+
+                return " - "}, TMP_58.$$s = self, TMP_58), $a).call($c);
+                ($a = ($d = self).$span, $a.$$p = (TMP_59 = function(){var self = TMP_59.$$s || this, $a, $b, TMP_60;
+
+                return ($a = ($b = self).$a, $a.$$p = (TMP_60 = function(){var self = TMP_60.$$s || this;
+
+                  return "blockchain.info"}, TMP_60.$$s = self, TMP_60), $a).call($b, $hash2(["href"], {"href": "https://blockchain.info/tx/" + (self.$tx_id())}))}, TMP_59.$$s = self, TMP_59), $a).call($d);
+                ($a = ($e = self).$span, $a.$$p = (TMP_61 = function(){var self = TMP_61.$$s || this;
+
+                return " - "}, TMP_61.$$s = self, TMP_61), $a).call($e);
+                ($a = ($f = self).$span, $a.$$p = (TMP_62 = function(){var self = TMP_62.$$s || this, $a, $b, TMP_63;
+
+                return ($a = ($b = self).$a, $a.$$p = (TMP_63 = function(){var self = TMP_63.$$s || this;
+
+                  return "chain.so"}, TMP_63.$$s = self, TMP_63), $a).call($b, $hash2(["href"], {"href": "https://chain.so/tx/BTC/" + (self.$tx_id())}))}, TMP_62.$$s = self, TMP_62), $a).call($f);
+                ($a = ($g = self).$span, $a.$$p = (TMP_64 = function(){var self = TMP_64.$$s || this;
+
+                return " - "}, TMP_64.$$s = self, TMP_64), $a).call($g);
+                return ($a = ($h = self).$span, $a.$$p = (TMP_65 = function(){var self = TMP_65.$$s || this, $a, $b, TMP_66;
+
+                return ($a = ($b = self).$a, $a.$$p = (TMP_66 = function(){var self = TMP_66.$$s || this;
+
+                  return "eternitywall.it"}, TMP_66.$$s = self, TMP_66), $a).call($b, $hash2(["href"], {"href": "http://eternitywall.it/m/" + (self.$tx_id())}))}, TMP_65.$$s = self, TMP_65), $a).call($h);}, TMP_55.$$s = self, TMP_55), $a).call($c);}, TMP_53.$$s = self, TMP_53), $a).call($j, $hash2(["className"], {"className": "row"}))
+            } else {
+            return nil
+          };}, TMP_18.$$s = self, TMP_18), $c).call($d)).$on, $a.$$p = (TMP_17 = function(){var self = TMP_17.$$s || this;
+
+        return self.$input_change()}, TMP_17.$$s = self, TMP_17), $a).call($b, "change")}, TMP_16.$$s = self, TMP_16), $a).call($b, $hash2(["className"], {"className": "message_input"}));
     };
 
     def.$callback_write = function() {
-      var $a, $b, TMP_56, self = this;
+      var $a, $b, TMP_67, self = this;
 
-      return ($a = ($b = self).$lambda, $a.$$p = (TMP_56 = function(tx_id){var self = TMP_56.$$s || this, $a, $b;
+      return ($a = ($b = self).$lambda, $a.$$p = (TMP_67 = function(tx_id){var self = TMP_67.$$s || this, $a, $b;
 if (tx_id == null) tx_id = nil;
       (($a = [tx_id]), $b = self, $b['$tx_id='].apply($b, $a), $a[$a.length-1]);
-        return (($a = [false]), $b = self, $b['$loading='].apply($b, $a), $a[$a.length-1]);}, TMP_56.$$s = self, TMP_56), $a).call($b);
+        return (($a = [false]), $b = self, $b['$loading='].apply($b, $a), $a[$a.length-1]);}, TMP_67.$$s = self, TMP_67), $a).call($b);
     };
 
     return (def.$spacer = function() {
@@ -1664,31 +1711,27 @@ if (tx_id == null) tx_id = nil;
     function $Address(){};
     var self = $Address = $klass($base, $super, 'Address', $Address);
 
-    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_57, $c, TMP_58, $d, TMP_59, $e, TMP_60, $f, TMP_61;
+    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_68, $c, TMP_69, $d, TMP_70, $e, TMP_71;
 
     self.$include((($scope.get('React')).$$scope.get('Component')));
 
     self.$extend($scope.get('DebugHelpers'));
 
-    ($a = ($b = self).$define_state, $a.$$p = (TMP_57 = function(){var self = TMP_57.$$s || this;
+    ($a = ($b = self).$define_state, $a.$$p = (TMP_68 = function(){var self = TMP_68.$$s || this;
 
-    return "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo"}, TMP_57.$$s = self, TMP_57), $a).call($b, "address_asd");
+    return $scope.get('PrivateKey').$new("KyM3Yzhpkc5o98sxHCNWtyXYyGkbbg82HgicShaNFUG2vC3SCHja")}, TMP_68.$$s = self, TMP_68), $a).call($b, "pvt_key");
 
-    ($a = ($c = self).$define_state, $a.$$p = (TMP_58 = function(){var self = TMP_58.$$s || this;
+    ($a = ($c = self).$define_state, $a.$$p = (TMP_69 = function(){var self = TMP_69.$$s || this;
 
-    return $scope.get('PrivateKey').$new()}, TMP_58.$$s = self, TMP_58), $a).call($c, "pvt_key");
+    return ""}, TMP_69.$$s = self, TMP_69), $a).call($c, "pvt_key_string");
 
-    ($a = ($d = self).$define_state, $a.$$p = (TMP_59 = function(){var self = TMP_59.$$s || this;
+    ($a = ($d = self).$define_state, $a.$$p = (TMP_70 = function(){var self = TMP_70.$$s || this;
 
-    return ""}, TMP_59.$$s = self, TMP_59), $a).call($d, "pvt_key_string");
+    return "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo"}, TMP_70.$$s = self, TMP_70), $a).call($d, "address");
 
-    ($a = ($e = self).$define_state, $a.$$p = (TMP_60 = function(){var self = TMP_60.$$s || this;
+    ($a = ($e = self).$define_state, $a.$$p = (TMP_71 = function(){var self = TMP_71.$$s || this;
 
-    return "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo"}, TMP_60.$$s = self, TMP_60), $a).call($e, "address");
-
-    ($a = ($f = self).$define_state, $a.$$p = (TMP_61 = function(){var self = TMP_61.$$s || this;
-
-    return false}, TMP_61.$$s = self, TMP_61), $a).call($f, "pvt_key_show");
+    return false}, TMP_71.$$s = self, TMP_71), $a).call($e, "pvt_key_show");
 
     def.$show_key = function() {
       var $a, $b, self = this;
@@ -1697,58 +1740,60 @@ if (tx_id == null) tx_id = nil;
     };
 
     return (def.$render = function() {
-      var $a, $b, TMP_62, self = this;
+      var $a, $b, TMP_72, self = this;
 
-      return ($a = ($b = self).$div, $a.$$p = (TMP_62 = function(){var self = TMP_62.$$s || this, $a, $b, TMP_63;
+      return ($a = ($b = self).$div, $a.$$p = (TMP_72 = function(){var self = TMP_72.$$s || this, $a, $b, TMP_73;
 
-      return ($a = ($b = self).$div, $a.$$p = (TMP_63 = function(){var self = TMP_63.$$s || this, $a, $b, TMP_64, $c, TMP_65, $d, TMP_66, $e, TMP_72, $f;
+      return ($a = ($b = self).$div, $a.$$p = (TMP_73 = function(){var self = TMP_73.$$s || this, $a, $b, TMP_74, $c, TMP_77, $d, TMP_83, $e;
 
-        ($a = ($b = self).$div, $a.$$p = (TMP_64 = function(){var self = TMP_64.$$s || this;
+        ($a = ($b = self).$div, $a.$$p = (TMP_74 = function(){var self = TMP_74.$$s || this, $a, $b, TMP_75, $c, TMP_76;
 
-          return "address: " + (self.$address())}, TMP_64.$$s = self, TMP_64), $a).call($b);
-          ($a = ($c = self).$div, $a.$$p = (TMP_65 = function(){var self = TMP_65.$$s || this;
+          ($a = ($b = self).$span, $a.$$p = (TMP_75 = function(){var self = TMP_75.$$s || this;
 
-          return "" + ($scope.get('PrivateKey').$new().$to_wif())}, TMP_65.$$s = self, TMP_65), $a).call($c);
-          ($a = ($d = self).$div, $a.$$p = (TMP_66 = function(){var self = TMP_66.$$s || this, $a, $b, TMP_67;
+            return "address: "}, TMP_75.$$s = self, TMP_75), $a).call($b);
+            return ($a = ($c = self).$span, $a.$$p = (TMP_76 = function(){var self = TMP_76.$$s || this;
 
-          return ($a = ($b = self).$div, $a.$$p = (TMP_67 = function(){var self = TMP_67.$$s || this, $a, $b, TMP_68, $c, TMP_69, $d;
+            return self.$pvt_key().$to_address()}, TMP_76.$$s = self, TMP_76), $a).call($c, $hash2(["className"], {"className": "bitcoin_address"}));}, TMP_74.$$s = self, TMP_74), $a).call($b);
+          ($a = ($c = self).$div, $a.$$p = (TMP_77 = function(){var self = TMP_77.$$s || this, $a, $b, TMP_78;
 
-            ($a = ($b = self).$div, $a.$$p = (TMP_68 = function(){var self = TMP_68.$$s || this;
+          return ($a = ($b = self).$div, $a.$$p = (TMP_78 = function(){var self = TMP_78.$$s || this, $a, $b, TMP_79, $c, TMP_80, $d;
 
-              return " "}, TMP_68.$$s = self, TMP_68), $a).call($b, $hash2(["className"], {"className": "four columns"}));
-              return ($a = ($c = self).$div, $a.$$p = (TMP_69 = function(){var self = TMP_69.$$s || this, $a, $b, TMP_70, $c, $d, TMP_71;
+            ($a = ($b = self).$div, $a.$$p = (TMP_79 = function(){var self = TMP_79.$$s || this;
 
-              return ($a = ($b = ($c = ($d = self).$button, $c.$$p = (TMP_71 = function(){var self = TMP_71.$$s || this;
+              return " "}, TMP_79.$$s = self, TMP_79), $a).call($b, $hash2(["className"], {"className": "four columns"}));
+              return ($a = ($c = self).$div, $a.$$p = (TMP_80 = function(){var self = TMP_80.$$s || this, $a, $b, TMP_81, $c, $d, TMP_82;
 
-                return "Show key"}, TMP_71.$$s = self, TMP_71), $c).call($d)).$on, $a.$$p = (TMP_70 = function(){var self = TMP_70.$$s || this;
+              return ($a = ($b = ($c = ($d = self).$button, $c.$$p = (TMP_82 = function(){var self = TMP_82.$$s || this;
 
-                return self.$show_key()}, TMP_70.$$s = self, TMP_70), $a).call($b, "click")}, TMP_69.$$s = self, TMP_69), $a).call($c, $hash2(["className"], {"className": "two columns " + ((function() {if ((($d = self.$pvt_key_show()) !== nil && (!$d.$$is_boolean || $d == true))) {
+                return "Show key"}, TMP_82.$$s = self, TMP_82), $c).call($d)).$on, $a.$$p = (TMP_81 = function(){var self = TMP_81.$$s || this;
+
+                return self.$show_key()}, TMP_81.$$s = self, TMP_81), $a).call($b, "click")}, TMP_80.$$s = self, TMP_80), $a).call($c, $hash2(["className"], {"className": "two columns " + ((function() {if ((($d = self.$pvt_key_show()) !== nil && (!$d.$$is_boolean || $d == true))) {
                 return "hidden"
                 } else {
                 return nil
-              }; return nil; })())}));}, TMP_67.$$s = self, TMP_67), $a).call($b, $hash2(["className"], {"className": "row"}))}, TMP_66.$$s = self, TMP_66), $a).call($d);
-          return ($a = ($e = self).$div, $a.$$p = (TMP_72 = function(){var self = TMP_72.$$s || this;
+              }; return nil; })())}));}, TMP_78.$$s = self, TMP_78), $a).call($b, $hash2(["className"], {"className": "row"}))}, TMP_77.$$s = self, TMP_77), $a).call($c);
+          return ($a = ($d = self).$div, $a.$$p = (TMP_83 = function(){var self = TMP_83.$$s || this;
 
-          return "private key: " + (self.$address())}, TMP_72.$$s = self, TMP_72), $a).call($e, $hash2(["className"], {"className": "" + ((function() {if ((($f = self.$pvt_key_show()) !== nil && (!$f.$$is_boolean || $f == true))) {
+          return "private key: " + (self.$pvt_key().$to_wif())}, TMP_83.$$s = self, TMP_83), $a).call($d, $hash2(["className"], {"className": "" + ((function() {if ((($e = self.$pvt_key_show()) !== nil && (!$e.$$is_boolean || $e == true))) {
             return nil
             } else {
             return "hidden"
-          }; return nil; })())}));}, TMP_63.$$s = self, TMP_63), $a).call($b, $hash2(["className"], {"className": "six columns"}))}, TMP_62.$$s = self, TMP_62), $a).call($b, $hash2(["className"], {"className": "row"}));
+          }; return nil; })())}));}, TMP_73.$$s = self, TMP_73), $a).call($b, $hash2(["className"], {"className": "six columns"}))}, TMP_72.$$s = self, TMP_72), $a).call($b, $hash2(["className"], {"className": "row"}));
     }, nil) && 'render';
   })(self, null);
   (function($base, $super) {
     function $FileForm(){};
     var self = $FileForm = $klass($base, $super, 'FileForm', $FileForm);
 
-    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_73;
+    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_84;
 
     self.$include((($scope.get('React')).$$scope.get('Component')));
 
     self.$extend($scope.get('DebugHelpers'));
 
-    ($a = ($b = self).$define_state, $a.$$p = (TMP_73 = function(){var self = TMP_73.$$s || this;
+    ($a = ($b = self).$define_state, $a.$$p = (TMP_84 = function(){var self = TMP_84.$$s || this;
 
-    return false}, TMP_73.$$s = self, TMP_73), $a).call($b, "submit_disabled");
+    return false}, TMP_84.$$s = self, TMP_84), $a).call($b, "submit_disabled");
 
     def.$hash_file = function() {
       var self = this;
@@ -1757,63 +1802,63 @@ if (tx_id == null) tx_id = nil;
     };
 
     return (def.$render = function() {
-      var $a, $b, TMP_74, self = this;
+      var $a, $b, TMP_85, self = this;
 
-      return ($a = ($b = self).$div, $a.$$p = (TMP_74 = function(){var self = TMP_74.$$s || this, $a, $b, TMP_75, $c, TMP_79;
+      return ($a = ($b = self).$div, $a.$$p = (TMP_85 = function(){var self = TMP_85.$$s || this, $a, $b, TMP_86, $c, TMP_90;
 
-      ($a = ($b = self).$div, $a.$$p = (TMP_75 = function(){var self = TMP_75.$$s || this, $a, $b, TMP_76;
+      ($a = ($b = self).$div, $a.$$p = (TMP_86 = function(){var self = TMP_86.$$s || this, $a, $b, TMP_87;
 
-        return ($a = ($b = self).$div, $a.$$p = (TMP_76 = function(){var self = TMP_76.$$s || this, $a, $b, TMP_77;
+        return ($a = ($b = self).$div, $a.$$p = (TMP_87 = function(){var self = TMP_87.$$s || this, $a, $b, TMP_88;
 
-          return ($a = ($b = self).$label, $a.$$p = (TMP_77 = function(){var self = TMP_77.$$s || this, $a, $b, TMP_78;
+          return ($a = ($b = self).$label, $a.$$p = (TMP_88 = function(){var self = TMP_88.$$s || this, $a, $b, TMP_89;
 
-            ($a = ($b = self).$div, $a.$$p = (TMP_78 = function(){var self = TMP_78.$$s || this;
+            ($a = ($b = self).$div, $a.$$p = (TMP_89 = function(){var self = TMP_89.$$s || this;
 
-              return "Your MP3 file"}, TMP_78.$$s = self, TMP_78), $a).call($b);
-              return self.$input($hash2(["name", "type"], {"name": "file", "type": "file"}));}, TMP_77.$$s = self, TMP_77), $a).call($b)}, TMP_76.$$s = self, TMP_76), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_75.$$s = self, TMP_75), $a).call($b, $hash2(["className"], {"className": "row"}));
-        return ($a = ($c = self).$div, $a.$$p = (TMP_79 = function(){var self = TMP_79.$$s || this, $a, $b, TMP_80, $c, TMP_83;
+              return "Your MP3 file"}, TMP_89.$$s = self, TMP_89), $a).call($b);
+              return self.$input($hash2(["name", "type"], {"name": "file", "type": "file"}));}, TMP_88.$$s = self, TMP_88), $a).call($b)}, TMP_87.$$s = self, TMP_87), $a).call($b, $hash2(["className"], {"className": "four columns"}))}, TMP_86.$$s = self, TMP_86), $a).call($b, $hash2(["className"], {"className": "row"}));
+        return ($a = ($c = self).$div, $a.$$p = (TMP_90 = function(){var self = TMP_90.$$s || this, $a, $b, TMP_91, $c, TMP_94;
 
-        ($a = ($b = self).$div, $a.$$p = (TMP_80 = function(){var self = TMP_80.$$s || this, $a, $b, TMP_81;
+        ($a = ($b = self).$div, $a.$$p = (TMP_91 = function(){var self = TMP_91.$$s || this, $a, $b, TMP_92;
 
-          return ($a = ($b = self).$label, $a.$$p = (TMP_81 = function(){var self = TMP_81.$$s || this, $a, $b, TMP_82;
+          return ($a = ($b = self).$label, $a.$$p = (TMP_92 = function(){var self = TMP_92.$$s || this, $a, $b, TMP_93;
 
-            ($a = ($b = self).$div, $a.$$p = (TMP_82 = function(){var self = TMP_82.$$s || this;
+            ($a = ($b = self).$div, $a.$$p = (TMP_93 = function(){var self = TMP_93.$$s || this;
 
-              return "Your FLAC file (optional)"}, TMP_82.$$s = self, TMP_82), $a).call($b);
-              return self.$input($hash2(["name", "type"], {"name": "file_flac", "type": "file"}));}, TMP_81.$$s = self, TMP_81), $a).call($b)}, TMP_80.$$s = self, TMP_80), $a).call($b, $hash2(["className"], {"className": "four columns"}));
-          return ($a = ($c = self).$div, $a.$$p = (TMP_83 = function(){var self = TMP_83.$$s || this, $a, $b, TMP_84;
+              return "Your FLAC file (optional)"}, TMP_93.$$s = self, TMP_93), $a).call($b);
+              return self.$input($hash2(["name", "type"], {"name": "file_flac", "type": "file"}));}, TMP_92.$$s = self, TMP_92), $a).call($b)}, TMP_91.$$s = self, TMP_91), $a).call($b, $hash2(["className"], {"className": "four columns"}));
+          return ($a = ($c = self).$div, $a.$$p = (TMP_94 = function(){var self = TMP_94.$$s || this, $a, $b, TMP_95;
 
-          return ($a = ($b = self).$label, $a.$$p = (TMP_84 = function(){var self = TMP_84.$$s || this, $a, $b, TMP_85, $c, TMP_86, $d, $e, TMP_87;
+          return ($a = ($b = self).$label, $a.$$p = (TMP_95 = function(){var self = TMP_95.$$s || this, $a, $b, TMP_96, $c, TMP_97, $d, $e, TMP_98;
 
-            ($a = ($b = self).$div, $a.$$p = (TMP_85 = function(){var self = TMP_85.$$s || this;
+            ($a = ($b = self).$div, $a.$$p = (TMP_96 = function(){var self = TMP_96.$$s || this;
 
-              return " "}, TMP_85.$$s = self, TMP_85), $a).call($b);
-              return ($a = ($c = ($d = ($e = self).$button, $d.$$p = (TMP_87 = function(){var self = TMP_87.$$s || this;
+              return " "}, TMP_96.$$s = self, TMP_96), $a).call($b);
+              return ($a = ($c = ($d = ($e = self).$button, $d.$$p = (TMP_98 = function(){var self = TMP_98.$$s || this;
 
-              return "Register"}, TMP_87.$$s = self, TMP_87), $d).call($e, $hash2(["disabled"], {"disabled": self.$submit_disabled()}))).$on, $a.$$p = (TMP_86 = function(){var self = TMP_86.$$s || this;
+              return "Register"}, TMP_98.$$s = self, TMP_98), $d).call($e, $hash2(["disabled"], {"disabled": self.$submit_disabled()}))).$on, $a.$$p = (TMP_97 = function(){var self = TMP_97.$$s || this;
 
-              return self.$hash_file()}, TMP_86.$$s = self, TMP_86), $a).call($c, "click");}, TMP_84.$$s = self, TMP_84), $a).call($b)}, TMP_83.$$s = self, TMP_83), $a).call($c, $hash2(["className"], {"className": "two columns"}));}, TMP_79.$$s = self, TMP_79), $a).call($c, $hash2(["className"], {"className": "row"}));}, TMP_74.$$s = self, TMP_74), $a).call($b, $hash2(["className"], {"className": "message_input"}));
+              return self.$hash_file()}, TMP_97.$$s = self, TMP_97), $a).call($c, "click");}, TMP_95.$$s = self, TMP_95), $a).call($b)}, TMP_94.$$s = self, TMP_94), $a).call($c, $hash2(["className"], {"className": "two columns"}));}, TMP_90.$$s = self, TMP_90), $a).call($c, $hash2(["className"], {"className": "row"}));}, TMP_85.$$s = self, TMP_85), $a).call($b, $hash2(["className"], {"className": "message_input"}));
     }, nil) && 'render';
   })(self, null);
   (function($base, $super) {
     function $Success(){};
     var self = $Success = $klass($base, $super, 'Success', $Success);
 
-    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_88;
+    var def = self.$$proto, $scope = self.$$scope, $a, $b, TMP_99;
 
     self.$include((($scope.get('React')).$$scope.get('Component')));
 
-    ($a = ($b = self).$define_state, $a.$$p = (TMP_88 = function(){var self = TMP_88.$$s || this;
+    ($a = ($b = self).$define_state, $a.$$p = (TMP_99 = function(){var self = TMP_99.$$s || this;
 
-    return ""}, TMP_88.$$s = self, TMP_88), $a).call($b, "tx_id");
+    return ""}, TMP_99.$$s = self, TMP_99), $a).call($b, "tx_id");
 
     return (def.$render = function() {
-      var $a, $b, TMP_89, self = this;
+      var $a, $b, TMP_100, self = this;
 
-      return ($a = ($b = self).$div, $a.$$p = (TMP_89 = function(){var self = TMP_89.$$s || this;
+      return ($a = ($b = self).$div, $a.$$p = (TMP_100 = function(){var self = TMP_100.$$s || this;
 
       self.$p("Message written:");
-        return self.$p(self.$tx_id());}, TMP_89.$$s = self, TMP_89), $a).call($b, $hash2(["className"], {"className": "success"}));
+        return self.$p(self.$tx_id());}, TMP_100.$$s = self, TMP_100), $a).call($b, $hash2(["className"], {"className": "success"}));
     }, nil) && 'render';
   })(self, null);
   (function($base, $super) {
@@ -1825,15 +1870,15 @@ if (tx_id == null) tx_id = nil;
     self.$include((($scope.get('React')).$$scope.get('Component')));
 
     return (def.$render = function() {
-      var $a, $b, TMP_90, self = this;
+      var $a, $b, TMP_101, self = this;
 
-      return ($a = ($b = self).$div, $a.$$p = (TMP_90 = function(){var self = TMP_90.$$s || this, $a, $b, TMP_91;
+      return ($a = ($b = self).$div, $a.$$p = (TMP_101 = function(){var self = TMP_101.$$s || this, $a, $b, TMP_102;
 
       self.$present($scope.get('MessageForm'));
         self.$div($hash2(["className"], {"className": "spacer300"}));
-        return ($a = ($b = self).$div, $a.$$p = (TMP_91 = function(){var self = TMP_91.$$s || this;
+        return ($a = ($b = self).$div, $a.$$p = (TMP_102 = function(){var self = TMP_102.$$s || this;
 
-        return self.$present($scope.get('Address'))}, TMP_91.$$s = self, TMP_91), $a).call($b, $hash2(["className"], {"className": "address"}));}, TMP_90.$$s = self, TMP_90), $a).call($b, $hash2(["className"], {"className": "bc_stylus"}));
+        return self.$present($scope.get('Address'))}, TMP_102.$$s = self, TMP_102), $a).call($b, $hash2(["className"], {"className": "address"}));}, TMP_101.$$s = self, TMP_101), $a).call($b, $hash2(["className"], {"className": "bc_stylus"}));
     }, nil) && 'render';
   })(self, null);
   self.$extend($scope.get('UIHelpers'));

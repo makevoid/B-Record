@@ -12,6 +12,9 @@ BlockchainPen + S3Play for the music artists!!
 - With the Address you can receive donations
 
 
+### notes:
+
+imogen heap's keybase: https://keybase.io/_/api/1.0/user/lookup.json?usernames=imogenheap
 
 #### addons:
 
@@ -57,6 +60,17 @@ this message contains also a magnet link so people can connect and share the son
 my artist address is saved into the transaction
 
 after downloading this track people can donate to the artist money
+
+
+
+THANKS TO IMOGEN WITH ALL MY HEART TO MAKING THIS REAL
+
+MAKING PEOPLE REALIZE WHAT BLOCKCHAIN IS
+
+- that we need to gather ideas
+- build programs
+- change the world
+- starting from the music industry
 
 
 

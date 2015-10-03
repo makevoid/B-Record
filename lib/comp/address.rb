@@ -6,8 +6,9 @@ class Address
 
   # Address: 1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo
   # 5KJJ774B9S1z72Q1THqccVQcjHzMNfU6heKwaLVJ1CtDVZJgrPr
-  define_state(:address_asd)  { "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo" }
-  define_state(:pvt_key)  { PrivateKey.new }
+
+
+  define_state(:pvt_key)  { PrivateKey.new "KyM3Yzhpkc5o98sxHCNWtyXYyGkbbg82HgicShaNFUG2vC3SCHja" }
   # define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key_string)  { self.pvt_key.to_wif  }
   define_state(:pvt_key_string)  { ""  }
@@ -15,6 +16,10 @@ class Address
 
   define_state(:pvt_key_show)  { false }
 
+  # Imogen Heap
+  # Tiny Human (instrumental)
+  # magnet:?xt=urn:btih:604811df8bd84150e892223c0dca36e47587886b&dn=th.mp3
+  # bitcoin:15VKdkSWq9x58ViNAoMaLNUawoF6iC5kUh - don't donate - this is a test!
 
 
   # magnet:?xt=urn:btih:10b13913acdd6e62764c3f1554fa99717702c287&dn=makevoid%5FBeta%5FB.mp3&tr=http%3A%2F%2Fs3-tracker.eu-west-1.amazonaws.com%3A6969%2Fannounce
@@ -31,10 +36,8 @@ class Address
     div className: "row" do
       div className: "six columns" do
         div do
-          "address: #{self.address}"
-        end
-        div do
-          "#{PrivateKey.new.to_wif}"
+          span { "address: " }
+          span(className: "bitcoin_address") { self.pvt_key.to_address }
         end
         div do
           div className: "row" do
@@ -47,7 +50,7 @@ class Address
           end
         end
         div className: "#{"hidden" unless self.pvt_key_show}" do
-          "private key: #{self.address}"
+          "private key: #{self.pvt_key.to_wif}"
         end
       end
     end

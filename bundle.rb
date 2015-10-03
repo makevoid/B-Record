@@ -123,6 +123,8 @@ class PrivateKey
     `key.toAddress()`
   end
 
+  alias :to_address :address
+
   def address_str
     address = self.address
     `address.toString()`
@@ -153,7 +155,8 @@ class BitCore
   def sign_and_broadcast
     -> (message, utxos, callback) do
       log "sign and broadcast"
-      tx_amount = 1000
+      # tx_amount = 1000
+      tx_amount = 2000
 
       utxos = hashes_convert utxos
 
@@ -370,6 +373,7 @@ class MessageForm
   define_state(:submit_disabled)  { false }
   define_state(:tx_id)  { nil }
   define_state(:loading) { false }
+  define_state(:preview) { "{}" }
 
   MAX_CHARS = 75
 
@@ -389,110 +393,154 @@ class MessageForm
     self.submit_disabled = true if self.chars > MAX_CHARS
   end
 
+  def input_change
+    key = `$('form').serializeArray()`
+    artist = `key[0].value`
+    song   = `key[1].value`
+    url    = `key[2].value`
+    magnet = `key[3].value`
+    btc    = `$('.bitcoin_address').text()`
+    extra  = `key[4].value`
+    log artist
+    # key = Array.new key
+    key = {
+      artist: artist,
+      song:   song,
+      url:    url,
+      magnet: magnet,
+      btc:    btc,
+      extra:  extra,
+    }
+    prev = JSON.stringify JSON.parse(key) # `JSON.stringify(#{key})`
+    prev = prev.split(",").join(",\n")
+    self.preview = prev
+  end
+
   def render
     div className: "message_input" do
-
-      # INPUT
-      # div className: "row align-right" do
-      #   span do
-      #     self.chars
-      #   end
-      #   span do
-      #     " / #{MAX_CHARS} chars"
-      #   end
-      # end
-      # spacer
-      div className: "row" do
-        div className: "four columns" do
-          input(name: "message", placeholder: "Artist name", type: "text")
-        end
-      end
-      div className: "row" do
-        div className: "four columns" do
-          input(name: "message", placeholder: "Song name", type: "text")
-        end
-      end
-      div className: "row" do
-        div className: "four columns" do
-          input(name: "message", placeholder: "place the magnet link here...", type: "text")
-            .on(:change){ update_counter }
-        end
-        div className: "two columns" do
-          # button(disabled: self.submit_disabled) do
-          #   "Write"
-          # end.on(:click){ write }
-        end
-      end
-      div className: "row" do
-        div className: "two columns" do
-          "- or -"
-        end
-      end
-      spacer
-
-      # FILE + BUTTON
-      div className: "message_input" do
+      form do
+        # INPUT
+        # div className: "row align-right" do
+        #   span do
+        #     self.chars
+        #   end
+        #   span do
+        #     " / #{MAX_CHARS} chars"
+        #   end
+        # end
+        # spacer
         div className: "row" do
           div className: "four columns" do
-            label do
-              div{ "MP3 file" }
-              input name: "file", type: "file"
-            end
+            input(name: "artist", placeholder: "Artist name", type: "text")
           end
         end
         div className: "row" do
           div className: "four columns" do
-            label do
-              div{ "FLAC file (optional)" }
-              input name: "file_flac", type: "file"
-            end
+            input(name: "song", placeholder: "Song name", type: "text")
+          end
+        end
+        div className: "row" do
+          div className: "four columns" do
+            input(name: "url", placeholder: "URL", type: "text")
+          end
+        end
+        div className: "row" do
+          div className: "four columns" do
+            input(name: "magnet", placeholder: "Place the magnet link here...", type: "text")
+              #.on(:change){ update_counter }
           end
           div className: "two columns" do
-            label do
-              div{ "\u00a0" }
-              button(disabled: self.submit_disabled) do
-                "Register"
-              end.on(:click){ hash_file }
-            end
+            # button(disabled: self.submit_disabled) do
+            #   "Write"
+            # end.on(:click){ write }
           end
         end
-      end
-
-      # MESSAGE
-      div className: "spinner" do
-        span { "loading..." }
-      end if self.loading
-      if self.tx_id
         div className: "row" do
-          div className: "spacer30"
-          div { "the message has been written: #{self.tx_id}" }
-          div do
-            span do
-              a href: "https://live.blockcypher.com/btc/tx/#{self.tx_id}" do
-                "blockcypher.com"
+          div className: "four columns" do
+            input(name: "extra", placeholder: "Extra data: label, etc", type: "text")
+          end
+        end
+        div className: "row" do
+          div className: "two columns" do
+            "- or -"
+          end
+        end
+        spacer
+
+        # FILE + BUTTON
+        div className: "message_input" do
+          div className: "row" do
+            div className: "four columns" do
+              label do
+                div{ "MP3 file" }
+                input name: "file", type: "file"
               end
             end
-            span { " - " }
-            span do
-              a href: "https://blockchain.info/tx/#{self.tx_id}" do
-                "blockchain.info"
+          end
+          div className: "row" do
+            div className: "four columns" do
+              label do
+                div{ "FLAC file (optional)" }
+                input name: "file_flac", type: "file"
               end
             end
-            span { " - " }
-            span do
-              a href: "https://chain.so/tx/BTC/#{self.tx_id}" do
-                "chain.so"
+          end
+          div className: "row" do
+            div className: "four columns" do
+              label do
+                div{ "preview:" }
+                pre className: "preview", type: "file" do
+                  self.preview
+                end
               end
             end
-            span { " - " }
-            span do
-              a href: "http://eternitywall.it/m/#{self.tx_id}" do
-                "eternitywall.it"
+            div className: "two columns" do
+              label do
+                div{ "\u00a0" }
+                button(disabled: self.submit_disabled) do
+                  "Register"
+                end.on(:click){ hash_file }
               end
             end
           end
         end
-      end
+
+        # MESSAGE
+        div className: "spinner" do
+          span { "loading..." }
+        end if self.loading
+        if self.tx_id
+          div className: "row" do
+            div className: "spacer30"
+            div { "the message has been written: #{self.tx_id}" }
+            div do
+              span do
+                a href: "https://live.blockcypher.com/btc/tx/#{self.tx_id}" do
+                  "blockcypher.com"
+                end
+              end
+              span { " - " }
+              span do
+                a href: "https://blockchain.info/tx/#{self.tx_id}" do
+                  "blockchain.info"
+                end
+              end
+              span { " - " }
+              span do
+                a href: "https://chain.so/tx/BTC/#{self.tx_id}" do
+                  "chain.so"
+                end
+              end
+              span { " - " }
+              span do
+                a href: "http://eternitywall.it/m/#{self.tx_id}" do
+                  "eternitywall.it"
+                end
+              end
+            end
+          end
+        end
+      end.on(:change){ input_change }
     end
   end
 
@@ -516,8 +564,9 @@ class Address
 
   # Address: 1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo
   # 5KJJ774B9S1z72Q1THqccVQcjHzMNfU6heKwaLVJ1CtDVZJgrPr
-  define_state(:address_asd)  { "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo" }
-  define_state(:pvt_key)  { PrivateKey.new }
+
+
+  define_state(:pvt_key)  { PrivateKey.new "KyM3Yzhpkc5o98sxHCNWtyXYyGkbbg82HgicShaNFUG2vC3SCHja" }
   # define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key_string)  { self.pvt_key.to_wif  }
   define_state(:pvt_key_string)  { ""  }
@@ -525,6 +574,10 @@ class Address
 
   define_state(:pvt_key_show)  { false }
 
+  # Imogen Heap
+  # Tiny Human (instrumental)
+  # magnet:?xt=urn:btih:604811df8bd84150e892223c0dca36e47587886b&dn=th.mp3
+  # bitcoin:15VKdkSWq9x58ViNAoMaLNUawoF6iC5kUh - don't donate - this is a test!
 
 
   # magnet:?xt=urn:btih:10b13913acdd6e62764c3f1554fa99717702c287&dn=makevoid%5FBeta%5FB.mp3&tr=http%3A%2F%2Fs3-tracker.eu-west-1.amazonaws.com%3A6969%2Fannounce
@@ -541,10 +594,8 @@ class Address
     div className: "row" do
       div className: "six columns" do
         div do
-          "address: #{self.address}"
-        end
-        div do
-          "#{PrivateKey.new.to_wif}"
+          span { "address: " }
+          span(className: "bitcoin_address") { self.pvt_key.to_address }
         end
         div do
           div className: "row" do
@@ -557,7 +608,7 @@ class Address
           end
         end
         div className: "#{"hidden" unless self.pvt_key_show}" do
-          "private key: #{self.address}"
+          "private key: #{self.pvt_key.to_wif}"
         end
       end
     end

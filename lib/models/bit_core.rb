@@ -17,7 +17,8 @@ class BitCore
   def sign_and_broadcast
     -> (message, utxos, callback) do
       log "sign and broadcast"
-      tx_amount = 1000
+      # tx_amount = 1000
+      tx_amount = 2000
 
       utxos = hashes_convert utxos
 

@@ -480,7 +480,7 @@ header h1 {
 input {
   font-size: 110%; }
 
-input[name=message] {
+input[name] {
   width: 100%; }
 
 input[type=submit], button {
@@ -503,3 +503,6 @@ input[type=submit], button {
 
 .hidden {
   display: none; }
+
+.preview {
+  height: 300px; }
