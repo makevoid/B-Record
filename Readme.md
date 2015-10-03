@@ -1,4 +1,5 @@
-# Imogelius - Blockchain Music Authoring Tool
+# B-Record 
+### Blockchain Music Authoring Tool
 #### ( temporary name, subject to change :D )
 
 
