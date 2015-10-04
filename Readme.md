@@ -3,6 +3,10 @@
 #### ( temporary name, subject to change :D )
 
 
+#### This version doesn't contain the most updated Blockchain / Bitcoin write method so if you are interested in that part please check https://github.com/makevoid/blockchain_pen
+
+---
+
 BlockchainPen + S3Play for the music artists!!
 
 - Upload/Publish Song
