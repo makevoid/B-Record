@@ -8,10 +8,10 @@ class Address
   # 5KJJ774B9S1z72Q1THqccVQcjHzMNfU6heKwaLVJ1CtDVZJgrPr
 
 
-  define_state(:pvt_key)  { PrivateKey.new "KyM3Yzhpkc5o98sxHCNWtyXYyGkbbg82HgicShaNFUG2vC3SCHja" }
+  define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key_string)  { self.pvt_key.to_wif  }
-  define_state(:pvt_key_string)  { ""  }
+  define_state(:pvt_key_string)  { "" }
   define_state(:address)  { "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo" }
 
   define_state(:pvt_key_show)  { false }
@@ -37,7 +37,10 @@ class Address
       div className: "six columns" do
         div do
           span { "address: " }
-          span(className: "bitcoin_address") { self.pvt_key.to_address }
+          span(className: "bitcoin_address") do
+            # key = self.pvt_key
+            # `key.toAddress()`
+          end
         end
         div do
           div className: "row" do

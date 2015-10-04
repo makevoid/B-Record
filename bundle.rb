@@ -123,7 +123,7 @@ class PrivateKey
     `key.toAddress()`
   end
 
-  alias :to_address :address
+  # alias :to_address :address
 
   def address_str
     address = self.address
@@ -395,23 +395,24 @@ class MessageForm
 
   def input_change
     key = `$('form').serializeArray()`
-    artist = `key[0].value`
-    song   = `key[1].value`
-    url    = `key[2].value`
-    magnet = `key[3].value`
-    btc    = `$('.bitcoin_address').text()`
-    extra  = `key[4].value`
-    log artist
+    # artist = `key[0].value`
+    # song   = `key[1].value`
+    # url    = `key[2].value`
+    # magnet = `key[3].value`
+    # btc    = `$('.bitcoin_address').text()`
+    # extra  = `key[4].value`
+    # log artist
     # key = Array.new key
-    key = {
-      artist: artist,
-      song:   song,
-      url:    url,
-      magnet: magnet,
-      btc:    btc,
-      extra:  extra,
-    }
-    prev = JSON.stringify JSON.parse(key) # `JSON.stringify(#{key})`
+    # key = {
+    #   artist: artist,
+    #   song:   song,
+    #   url:    url,
+    #   magnet: magnet,
+    #   btc:    btc,
+    #   extra:  extra,
+    # }
+    prev = `JSON.stringify(#{key})`
+    log prev
     prev = prev.split(",").join(",\n")
     self.preview = prev
   end
@@ -566,10 +567,10 @@ class Address
   # 5KJJ774B9S1z72Q1THqccVQcjHzMNfU6heKwaLVJ1CtDVZJgrPr
 
 
-  define_state(:pvt_key)  { PrivateKey.new "KyM3Yzhpkc5o98sxHCNWtyXYyGkbbg82HgicShaNFUG2vC3SCHja" }
+  define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key)  { PrivateKey.new }
   # define_state(:pvt_key_string)  { self.pvt_key.to_wif  }
-  define_state(:pvt_key_string)  { ""  }
+  define_state(:pvt_key_string)  { "" }
   define_state(:address)  { "1iMoGCdd1spPGWXjhKfBQHsugqgd9L3Fo" }
 
   define_state(:pvt_key_show)  { false }
@@ -595,7 +596,10 @@ class Address
       div className: "six columns" do
         div do
           span { "address: " }
-          span(className: "bitcoin_address") { self.pvt_key.to_address }
+          span(className: "bitcoin_address") do
+            # key = self.pvt_key
+            # `key.toAddress()`
+          end
         end
         div do
           div className: "row" do

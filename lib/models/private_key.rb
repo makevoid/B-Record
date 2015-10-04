@@ -8,7 +8,7 @@ class PrivateKey
     `key.toAddress()`
   end
 
-  alias :to_address :address
+  # alias :to_address :address
 
   def address_str
     address = self.address

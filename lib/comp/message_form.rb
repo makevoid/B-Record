@@ -30,23 +30,24 @@ class MessageForm
 
   def input_change
     key = `$('form').serializeArray()`
-    artist = `key[0].value`
-    song   = `key[1].value`
-    url    = `key[2].value`
-    magnet = `key[3].value`
-    btc    = `$('.bitcoin_address').text()`
-    extra  = `key[4].value`
-    log artist
+    # artist = `key[0].value`
+    # song   = `key[1].value`
+    # url    = `key[2].value`
+    # magnet = `key[3].value`
+    # btc    = `$('.bitcoin_address').text()`
+    # extra  = `key[4].value`
+    # log artist
     # key = Array.new key
-    key = {
-      artist: artist,
-      song:   song,
-      url:    url,
-      magnet: magnet,
-      btc:    btc,
-      extra:  extra,
-    }
-    prev = JSON.stringify JSON.parse(key) # `JSON.stringify(#{key})`
+    # key = {
+    #   artist: artist,
+    #   song:   song,
+    #   url:    url,
+    #   magnet: magnet,
+    #   btc:    btc,
+    #   extra:  extra,
+    # }
+    prev = `JSON.stringify(#{key})`
+    log prev
     prev = prev.split(",").join(",\n")
     self.preview = prev
   end

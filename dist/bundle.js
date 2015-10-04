@@ -1079,7 +1079,7 @@ Opal.modules["json"] = function(Opal) {
   Opal.dynamic_require_severity = "error";
   var self = Opal.top, $scope = Opal, nil = Opal.nil, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $module = Opal.module, $range = Opal.range, $hash2 = Opal.hash2, content = nil;
 
-  Opal.add_stubs(['$map', '$[]', '$to_s', '$instance_variables', '$to_proc', '$-', '$==', '$size', '$extend', '$include', '$get', '$utxo_callback', '$lambda', '$to_n', '$post', '$pushtx_callback', '$address', '$require', '$new', '$log', '$address_str', '$hashes_convert', '$each', '$+', '$utxos', '$store', '$include?', '$parse', '$push', '$>', '$empty?', '$pushtx', '$utxos=', '$to_json', '$call', '$sign_and_broadcast', '$utxo', '$received_utxo', '$Native', '$pvt_key', '$op_return', '$callback_write', '$define_state', '$message', '$loading=', '$write', '$chars=', '$chars', '$submit_disabled=', '$stringify', '$join', '$split', '$preview=', '$div', '$on', '$input_change', '$form', '$input', '$spacer', '$label', '$pre', '$preview', '$hash_file', '$button', '$submit_disabled', '$loading', '$span', '$tx_id', '$a', '$tx_id=', '$pvt_key_show=', '$to_address', '$show_key', '$pvt_key_show', '$to_wif', '$p', '$present', '$q', '$render', '$create_element']);
+  Opal.add_stubs(['$map', '$[]', '$to_s', '$instance_variables', '$to_proc', '$-', '$==', '$size', '$extend', '$include', '$get', '$utxo_callback', '$lambda', '$to_n', '$post', '$pushtx_callback', '$address', '$require', '$new', '$log', '$address_str', '$hashes_convert', '$each', '$+', '$utxos', '$store', '$include?', '$parse', '$push', '$>', '$empty?', '$pushtx', '$utxos=', '$to_json', '$call', '$sign_and_broadcast', '$utxo', '$received_utxo', '$Native', '$pvt_key', '$op_return', '$callback_write', '$define_state', '$message', '$loading=', '$write', '$chars=', '$chars', '$submit_disabled=', '$join', '$split', '$preview=', '$div', '$on', '$input_change', '$form', '$input', '$spacer', '$label', '$pre', '$preview', '$hash_file', '$button', '$submit_disabled', '$loading', '$span', '$tx_id', '$a', '$tx_id=', '$pvt_key_show=', '$show_key', '$pvt_key_show', '$to_wif', '$p', '$present', '$q', '$render', '$create_element']);
   console.log("loading app environment");
   self.$require("browser");
   self.$require("browser/http");
@@ -1234,8 +1234,6 @@ if (tx_info == null) tx_info = nil;
       key = self.key;
       return key.toAddress();
     };
-
-    Opal.defn(self, '$to_address', def.$address);
 
     def.$address_str = function() {
       var self = this, address = nil;
@@ -1538,18 +1536,11 @@ if (tx_id == null) tx_id = nil;
     };
 
     def.$input_change = function() {
-      var $a, $b, self = this, key = nil, artist = nil, song = nil, url = nil, magnet = nil, btc = nil, extra = nil, prev = nil;
+      var $a, $b, self = this, key = nil, prev = nil;
 
       key = $('form').serializeArray();
-      artist = key[0].value;
-      song = key[1].value;
-      url = key[2].value;
-      magnet = key[3].value;
-      btc = $('.bitcoin_address').text();
-      extra = key[4].value;
-      self.$log(artist);
-      key = $hash2(["artist", "song", "url", "magnet", "btc", "extra"], {"artist": artist, "song": song, "url": url, "magnet": magnet, "btc": btc, "extra": extra});
-      prev = $scope.get('JSON').$stringify($scope.get('JSON').$parse(key));
+      prev = JSON.stringify(key);
+      self.$log(prev);
       prev = prev.$split(",").$join(",\n");
       return (($a = [prev]), $b = self, $b['$preview='].apply($b, $a), $a[$a.length-1]);
     };
@@ -1719,7 +1710,7 @@ if (tx_id == null) tx_id = nil;
 
     ($a = ($b = self).$define_state, $a.$$p = (TMP_68 = function(){var self = TMP_68.$$s || this;
 
-    return $scope.get('PrivateKey').$new("KyM3Yzhpkc5o98sxHCNWtyXYyGkbbg82HgicShaNFUG2vC3SCHja")}, TMP_68.$$s = self, TMP_68), $a).call($b, "pvt_key");
+    return $scope.get('PrivateKey').$new()}, TMP_68.$$s = self, TMP_68), $a).call($b, "pvt_key");
 
     ($a = ($c = self).$define_state, $a.$$p = (TMP_69 = function(){var self = TMP_69.$$s || this;
 
@@ -1753,7 +1744,7 @@ if (tx_id == null) tx_id = nil;
             return "address: "}, TMP_75.$$s = self, TMP_75), $a).call($b);
             return ($a = ($c = self).$span, $a.$$p = (TMP_76 = function(){var self = TMP_76.$$s || this;
 
-            return self.$pvt_key().$to_address()}, TMP_76.$$s = self, TMP_76), $a).call($c, $hash2(["className"], {"className": "bitcoin_address"}));}, TMP_74.$$s = self, TMP_74), $a).call($b);
+            return nil}, TMP_76.$$s = self, TMP_76), $a).call($c, $hash2(["className"], {"className": "bitcoin_address"}));}, TMP_74.$$s = self, TMP_74), $a).call($b);
           ($a = ($c = self).$div, $a.$$p = (TMP_77 = function(){var self = TMP_77.$$s || this, $a, $b, TMP_78;
 
           return ($a = ($b = self).$div, $a.$$p = (TMP_78 = function(){var self = TMP_78.$$s || this, $a, $b, TMP_79, $c, TMP_80, $d;
