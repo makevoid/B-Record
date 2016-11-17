@@ -1,9 +1,10 @@
 # B-Record 
-### Blockchain Music Authoring Tool
-#### ( temporary name, subject to change :D )
+### Blockchain Music Authoring Too
 
 
-#### This version doesn't contain the most updated Blockchain / Bitcoin write method so if you are interested in that part please check https://github.com/makevoid/blockchain_pen
+#### This version doesn't contain the most updated Blockchain / Bitcoin write method so if you are interested in that part 
+
+### Please check https://github.com/makevoid/blockchain_pen
 
 ---
 
