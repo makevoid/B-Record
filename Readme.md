@@ -4,7 +4,7 @@
 
 #### This version doesn't contain the most updated Blockchain / Bitcoin write method so if you are interested in that part 
 
-### Please check https://github.com/makevoid/blockchain_pen
+### Please check https://github.com/makevoid/blockchain-pen
 
 ---
 
